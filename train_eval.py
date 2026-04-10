@@ -90,16 +90,11 @@ def evaluate_and_visualize():
 
     em_list = []
     for index in range(P):
-        weights = A_hat[index, :]
-        weight_sum = np.sum(weights)
-        if weight_sum <= 1e-8:
-            weighted_spec = em_hat[:, index, :].mean(axis=0)
-        else:
-            weighted_spec = np.sum(em_hat[:, index, :] * weights[:, None], axis=0) / weight_sum
-        max_value = np.max(weighted_spec)
+        mean_spec = em_hat[:, index, :].mean(axis=0)
+        max_value = np.max(mean_spec)
         if max_value > 1e-8:
-            weighted_spec = weighted_spec / max_value
-        em_list.append(weighted_spec)
+            mean_spec = mean_spec / max_value
+        em_list.append(mean_spec)
 
     em_one = np.stack(em_list, axis=1)
     A_hat, A_true_adj = adjust_Adim(A_hat, A_true)
